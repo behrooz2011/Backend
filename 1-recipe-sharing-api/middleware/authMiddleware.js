@@ -3,6 +3,9 @@ const User = require("../models/User");
 
 const authMiddleware = async (req, res, next) => {
   const token = req.headers["authorization"]?.split(" ")[1];
+  console.log("Auth MW token: ", token);
+  console.log("Auth MW req.headers: ", req.headers);
+
   /**This line attempts to extract the JWT from the Authorization header of the incoming request.
    *  The token is expected to be in the format Bearer <token>,
    * so it splits the string and takes the second part (the actual token). */

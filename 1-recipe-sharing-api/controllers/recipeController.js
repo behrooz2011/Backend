@@ -2,11 +2,12 @@ const Recipe = require("../models/Recipe");
 //create a new recipe
 
 exports.createRecipe = async (req, res) => {
-  const { title, ingredients, instructions, tags } = req.body;
+  const { title, ingredients, instruction, tags } = req.body;
+  console.log(" createRecipe req.body: ", req.body);
   const recipe = new Recipe({
     title,
     ingredients,
-    instructions,
+    instruction,
     author: req.user.id,
     tags,
   });
@@ -16,6 +17,8 @@ exports.createRecipe = async (req, res) => {
 
 //Get a specific recipe by ID
 exports.getRecipe = async (req, res) => {
+  console.log("req.params.id: ", req.params.id);
+
   const recipe = await Recipe.findById(req.params.id).populate(
     "author",
     "username"
@@ -36,10 +39,15 @@ exports.getRecipe = async (req, res) => {
 };
 // Search for recipes based on criteria
 exports.searchRecipes = async (req, res) => {
+  console.log("---------------------search -------------------");
+
   const { keyword, ingredients, tags } = req.query;
+  console.log("searchRecipes req.query:", req.query);
+
   const query = {};
   if (keyword) {
     query.title = { $regex: keyword, $options: "i" }; //search case-insensitive.
+    console.log("query: ", query);
   }
   if (ingredients) {
     query.ingredients = { $all: ingredients.split(",") }; // If the request query is ?ingredients=tomato,onion,
