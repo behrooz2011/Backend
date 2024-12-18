@@ -1,5 +1,16 @@
 const User = require("../models/User");
 
+//Get all the users
+exports.getAllUsers = async (req, res) => {
+  try {
+    const users = await User.find().select("-password"); // Fetch all users and exclude the password field
+    res.json(users); // Send the list of users as a JSON response
+  } catch (error) {
+    console.error("Error fetching users: ", error.message);
+    res.status(500).json({ message: "Server error" }); // Handle any errors that occur
+  }
+};
+
 // Get user profile
 exports.getUserProfile = async (req, res) => {
   const user = await User.findById(req.user.id).select("-password");
