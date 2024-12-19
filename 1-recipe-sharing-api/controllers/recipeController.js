@@ -86,3 +86,27 @@ exports.commentOnRecipe = async (req, res) => {
   await recipe.save();
   res.json(recipe);
 };
+
+//Delete a recipe
+exports.deleteRecipeById = async (req, res) => {
+  const { id } = req.params; // Get the recipe ID from the request parameters
+
+  try {
+    // Find the recipe by ID and delete it
+    const deletedRecipe = await Recipe.findByIdAndDelete(id);
+
+    // Check if the recipe was found and deleted
+    if (!deletedRecipe) {
+      return res.status(404).json({ message: "Recipe not found" });
+    }
+
+    // Send a success response
+    return res.status(200).json({ message: "Recipe deleted successfully" });
+  } catch (error) {
+    // Handle any errors that occur during the deletion process
+    console.error(error);
+    return res
+      .status(500)
+      .json({ message: "Server error", error: error.message });
+  }
+};
