@@ -1,0 +1,16 @@
+project/
+├── app.js
+├── routes/
+│   ├── userRoutes.js
+│   ├── favoriteRoutes.js
+│   └── alertRoutes.js
+├── controllers/
+│   ├── userController.js
+│   ├── favoriteController.js
+│   └── alertController.js
+├── services/
+│   └── exchangeService.js
+├── cron/
+│   └── cronJobs.js
+├── db.js
+└── .env
