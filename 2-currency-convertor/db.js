@@ -20,6 +20,16 @@ db.serialize(() => {
       target_rate REAL NOT NULL
     )
   `);
+  //Favorite table
+  db.run(
+    `CREATE TABLE IF NOT EXISTS favorites (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id INTEGER,
+        from_currency TEXT,
+        to_currency TEXT,
+        FOREIGN KEY (user_id) REFERENCES users(id)
+    )`
+  );
 });
 
 module.exports = db;

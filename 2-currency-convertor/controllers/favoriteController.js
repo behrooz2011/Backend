@@ -2,11 +2,15 @@ const db = require("../db");
 
 // Add a favorite currency pair
 exports.addFavorite = (req, res) => {
-  const { userId, fromCurrency, toCurrency } = req.body;
+  console.log(" --addFavorite--");
+  const userId = req.user.id;
+
+  const { fromCurrency, toCurrency } = req.body;
 
   if (!userId || !fromCurrency || !toCurrency) {
     return res.status(400).json({ message: "All fields are required" });
   }
+  console.log({ userId, fromCurrency, toCurrency });
 
   db.run(
     `INSERT INTO favorites (user_id, from_currency, to_currency) VALUES (?, ?, ?)`,
@@ -27,7 +31,8 @@ exports.addFavorite = (req, res) => {
 
 // Get all favorites for a user
 exports.getFavorites = (req, res) => {
-  const { userId } = req.params;
+  // const { userId } = req.params;
+  const userId = req.user.id;
 
   if (!userId) {
     return res.status(400).json({ message: "User ID is required" });
