@@ -17,7 +17,8 @@ db.serialize(() => {
       user_id INTEGER NOT NULL,
       from_currency TEXT NOT NULL,
       to_currency TEXT NOT NULL,
-      target_rate REAL NOT NULL
+      target_rate REAL NOT NULL,
+      rateType TEXT NOT NULL
     )
   `);
   //Favorite table
@@ -33,3 +34,18 @@ db.serialize(() => {
 });
 
 module.exports = db;
+
+/**
+ * Used inside the serialized section to remove a table:
+ * let tableName = "alerts";
+ *   const sql = `DROP TABLE IF EXISTS ${tableName};`;
+
+  db.run(sql, (err) => {
+    if (err) {
+      console.error("Error dropping table: " + err.message);
+    } else {
+      console.log(`Table ${tableName} dropped successfully.`);
+    }
+  });
+ * 
+ */

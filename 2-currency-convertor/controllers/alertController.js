@@ -5,15 +5,16 @@ const nodemailer = require("nodemailer");
 
 // Add a rate alert
 exports.setAlert = (req, res) => {
-  const { userId, fromCurrency, toCurrency, targetRate } = req.body;
+  const userId = req.user.id;
+  const { fromCurrency, toCurrency, targetRate, rateType } = req.body;
 
-  if (!userId || !fromCurrency || !toCurrency || !targetRate) {
+  if (!userId || !fromCurrency || !toCurrency || !targetRate || !rateType) {
     return res.status(400).json({ message: "All fields are required" });
   }
 
   db.run(
-    `INSERT INTO alerts (user_id, from_currency, to_currency, target_rate) VALUES (?, ?, ?, ?)`,
-    [userId, fromCurrency, toCurrency, targetRate],
+    `INSERT INTO alerts (user_id, from_currency, to_currency, target_rate, rateType) VALUES (?, ?, ?, ?, ?)`,
+    [userId, fromCurrency, toCurrency, targetRate, rateType],
     function (err) {
       if (err) {
         return res

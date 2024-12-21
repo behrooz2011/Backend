@@ -11,22 +11,25 @@ const transporter = nodemailer.createTransport({
   },
 });
 
+//Run every minute
 exports.startRateAlertChecker = () => {
   cron.schedule("* * * * *", async () => {
     console.log("Checking rate alerts...");
     try {
       const rates = await exchangeService.getExchangeRates();
 
-      db.all("SELECT * FROM rate_alerts", [], (err, alerts) => {
+      db.all("SELECT * FROM alerts", [], (err, alerts) => {
         if (err) throw err;
-
+        console.log("alerts: ", alerts);
         alerts.forEach((alert) => {
-          const [from, to] = alert.pair.split("_");
-          const currentRate = rates.rates[to] / rates.rates[from];
+          // const [from, to] = alert.pair.split("_");
+          const currentRate =
+            rates.rates[alert.to_currency] / rates.rates[alert.from_currency];
+          console.log("currentRate: ", currentRate);
 
           if (
-            (alert.rateType === "below" && currentRate <= alert.rate) ||
-            (alert.rateType === "above" && currentRate >= alert.rate)
+            (alert.rateType === "below" && currentRate <= alert.target_rate) || //alert.rate comes from the table, ie, user generated
+            (alert.rateType === "above" && currentRate >= alert.target_rate)
           ) {
             db.get(
               "SELECT email FROM users WHERE id = ?",
@@ -43,6 +46,7 @@ exports.startRateAlertChecker = () => {
                   } is now ${currentRate.toFixed(4)}.`,
                 };
 
+                console.log("---Email Sent ----");
                 transporter.sendMail(mailOptions, (err) => {
                   if (err) console.error(err.message);
                   else console.log(`Notification sent to ${user.email}`);
