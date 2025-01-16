@@ -6,6 +6,7 @@ const connectDB = require("./config/db");
 const authRoutes = require("./routes/authRoutes");
 const recipeRoutes = require("./routes/recipeRoutes");
 const userRoutes = require("./routes/userRoutes");
+const practiceRoutes = require("./routes/practiceRoutes");
 console.log("---start---");
 dotenv.config();
 connectDB();
@@ -19,6 +20,7 @@ console.log("---server----");
 app.use("/api/auth", authRoutes);
 app.use("/api/recipes", recipeRoutes);
 app.use("/api/users", userRoutes);
+app.use("/api/practice", practiceRoutes);
 
 // Start the server
 
