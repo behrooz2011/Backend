@@ -18,6 +18,7 @@ function About() {
         Logout
       </button>
       <div className="about-content">
+        <h1> Hello {}</h1>
         <h1>Welcome to the Protected About Page!</h1>
         <p>This page is only visible to authenticated users.</p>
       </div>

@@ -188,6 +188,7 @@ function Home() {
       });
 
       const data = await response.json();
+      console.log("data: ", data);
 
       if (response.ok) {
         if (!isSignup) {
@@ -197,6 +198,8 @@ function Home() {
           setIsSignup(false); // Switch to signin after successful signup
         }
       } else {
+        setEmail("");
+        setPassword("");
         alert(data.message);
       }
     } catch (error) {
